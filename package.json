@@ -1,0 +1,14 @@
+{
+  "name": "yuzu-social",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Auto-publication gratuite des posts YUZU (X, Instagram) via GitHub Actions.",
+  "scripts": {
+    "publish": "node src/publish.js",
+    "dry-run": "node src/publish.js --dry-run"
+  },
+  "dependencies": {
+    "twitter-api-v2": "^1.18.2"
+  }
+}

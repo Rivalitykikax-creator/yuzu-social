@@ -1,0 +1,45 @@
+name: Publier les posts
+
+on:
+  schedule:
+    - cron: '*/30 * * * *' # toutes les 30 min (UTC, parfois quelques min de retard)
+  workflow_dispatch: {} # bouton "Run workflow" manuel
+
+permissions:
+  contents: write # pour committer la mise à jour des statuts
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: node src/publish.js
+        env:
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+
+      - name: Sauvegarder les statuts mis à jour
+        run: |
+          if [[ -n "$(git status --porcelain queue.json)" ]]; then
+            git config user.name "yuzu-bot"
+            git config user.email "bot@users.noreply.github.com"
+            git add queue.json
+            git commit -m "chore: maj statut publications [skip ci]"
+            git push
+          fi
