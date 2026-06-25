@@ -2,9 +2,13 @@
   {
     "id": "2026-06-25-exemple-x",
     "text": "YUZU — studio de design & branding.\n\nOn donne du goût à votre marque.",
-    "platforms": ["x"],
+    "platforms": [
+      "x"
+    ],
     "publishAt": "2026-06-25T08:30:00Z",
     "image": null,
-    "status": "pending"
+    "status": "pending",
+    "publishedOn": [],
+    "lastError": "x: Clés X manquantes (X_API_KEY / X_API_SECRET / X_ACCESS_TOKEN / X_ACCESS_SECRET)."
   }
 ]
